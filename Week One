@@ -1,0 +1,24 @@
+////1. Program to print  Hello world 
+org 100h
+jmp start
+msg:    db      "Hello, World!", 0Dh,0Ah, 24h
+start:  mov     dx, msg
+        mov     ah, 09h 
+        int     21h         
+        mov     ah, 0 
+        int     16h        
+ret 
+
+
+////2.program to print your name 
+
+
+org 100h
+jmp start
+msg:    db      "Ruthika Bogineni", 0Dh,0Ah, 24h
+start:  mov     dx, msg
+        mov     ah, 09h 
+        int     21h       
+        mov     ah, 0 
+        int     16h        
+ret 
