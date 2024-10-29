@@ -1,0 +1,105 @@
+1)Write a program in assembly language to take two single-digit numbers as input and display whether they are equal or not.
+ORG 100h
+start:
+    mov dx, offset msg_input1
+    mov ah, 09h
+    int 21h              ; Display prompt for first number
+
+    mov ah, 01h
+    int 21h              ; Read first number
+    mov bl, al           ; Store first number in BL
+
+    ; Output first number
+    mov dx, offset msg_output1
+    mov ah, 09h
+    int 21h
+    mov dl, bl
+    mov ah, 02h
+    int 21h
+
+    ; Input second number
+    mov dx, offset msg_input2
+    mov ah, 09h
+    int 21h              ; Display prompt for second number
+
+    mov ah, 01h
+    int 21h              ; Read second number
+    mov cl, al           ; Store second number in CL
+
+    ; Output second number
+    mov dx, offset msg_output2
+    mov ah, 09h
+    int 21h
+    mov dl, cl
+    mov ah, 02h
+    int 21h
+
+    ; Compare the two numbers
+    cmp bl, cl
+    je Equal            ; Jump if equal
+
+NotEqual:
+    ; Output not equal message
+    mov dx, offset msg_not_equal
+    mov ah, 09h
+    int 21h
+    jmp endprogram
+
+Equal:
+    ; Output equal message
+    mov dx, offset msg_equal
+    mov ah, 09h
+    int 21h
+
+endprogram:
+    mov ah, 4Ch          ; Terminate program
+    int 21h
+msg_input1 db "Enter first single-digit number (0-9): $"
+msg_output1 db 0Dh, 0Ah, "The first number is: $"
+msg_input2 db 0Dh, 0Ah, "Enter second single-digit number (0-9): $"
+msg_output2 db 0Dh, 0Ah, "The second number is: $"
+msg_equal db 0Dh, 0Ah, "The numbers are equal.$"
+msg_not_equal db 0Dh, 0Ah, "The numbers are not equal.$"
+
+
+2) Write a program in assembly language to check whether a single-digit number is odd or even.
+ORG 100h
+MOV DX, OFFSET msg_input    ; Load the address of the input prompt message
+MOV AH, 09h                 ; Function 09h of INT 21h to display a string
+INT 21h                     ; Call DOS interrupt to display the message
+
+; Get the single-digit number from user input
+MOV AH, 01h                 ; Function 01h of INT 21h to read a character from input
+INT 21h                     ; Call DOS interrupt to get the input number
+SUB AL, '0'                 ; Convert ASCII to integer
+MOV BL, AL                  ; Store the number in BL
+
+; Check if the number is even or odd
+MOV AH, 00h                 ; Clear AH
+MOV AL, BL                  ; Move the number to AL for division
+MOV CL, 02                  ; Divide by 2 to check if it's even
+DIV CL                      ; AL = BL / 2, remainder in AH
+
+CMP AH, 0                   ; Check remainder (stored in AH)
+JE EvenNumber               ; If remainder is 0, jump to EvenNumber
+
+; Display message "The number is odd"
+MOV DX, OFFSET msg_odd      ; Load the address of the 'odd' message
+MOV AH, 09h                 ; Function 09h of INT 21h to display a string
+INT 21h                     ; Call DOS interrupt to print the message
+JMP EndProgram              ; Jump to end the program
+
+EvenNumber:
+; Display message "The number is even"
+MOV DX, OFFSET msg_even     ; Load the address of the 'even' message
+MOV AH, 09h                 ; Function 09h of INT 21h to display a string
+INT 21h                     ; Call DOS interrupt to print the message
+
+EndProgram:
+MOV AH, 4Ch                 ; Function 4Ch of INT 21h terminates the program
+INT 21h                     ; Call DOS interrupt to exit
+
+msg_input  DB 'Enter a single-digit number: $'
+msg_even   DB 0Dh, 0Ah, 'The number is even.$'
+msg_odd    DB 0Dh, 0Ah, 'The number is odd.$'
+
